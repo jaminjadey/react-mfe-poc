@@ -1,0 +1,15 @@
+{
+  "name": "mf-iframe-demo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n SHELL,ADAPTOR,MODA,MODB -c blue,magenta,green,yellow \"npm:serve-shell\" \"npm --workspace apps/iframe-adaptor run dev\" \"npm --workspace apps/module-a run dev\" \"npm --workspace apps/module-b run dev\"",
+    "serve-shell": "http-server apps/shell -p 8080 -c-1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "http-server": "^14.1.1"
+  }
+}

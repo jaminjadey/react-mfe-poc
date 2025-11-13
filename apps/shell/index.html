@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Legacy Shell (Strangler Demo)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #e5e7eb;
+      --accent: #60a5fa;
+    }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+      background: linear-gradient(180deg, var(--bg), #020617);
+      color: var(--text);
+    }
+    header, footer {
+      background: #0b1220;
+      border-bottom: 1px solid #1f2937;
+      border-top: 1px solid #1f2937;
+      padding: 12px 20px;
+    }
+    header h1 { margin: 0; font-size: 1.25rem; }
+    nav a {
+      color: var(--accent); text-decoration: none; margin-right: 16px; font-weight: 600;
+    }
+    nav a:hover { text-decoration: underline; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    .card {
+      border: 1px solid #1f2937; border-radius: 14px; padding: 16px; background: var(--card);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+    iframe {
+      width: 100%; height: 70vh; border: 0; border-radius: 14px; background: white;
+    }
+    .hint { font-size: 0.9rem; opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Legacy Site — Strangler Demo</h1>
+      <nav aria-label="Primary">
+        <a href="#" data-page="a">Module A</a>
+        <a href="#" data-page="b">Module B</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="card" role="region" aria-label="Demo">
+      <p class="hint">
+        Click a nav link to load the micro-frontend inside the iframe via the adaptor.
+      </p>
+      <iframe
+        id="app-frame"
+        title="Micro-frontend Frame"
+        sandbox="allow-scripts allow-same-origin"
+        referrerpolicy="no-referrer"
+        src="http://localhost:3000/?page=a">
+      </iframe>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <small>&copy; 2025 Your Team — Strangler demo. Replace legacy pages gradually with MFEs.</small>
+    </div>
+  </footer>
+
+  <script>
+    const frame = document.getElementById('app-frame');
+    document.querySelectorAll('nav a[data-page]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const page = a.getAttribute('data-page');
+        const url = new URL('http://localhost:3000/', window.location.origin);
+        url.searchParams.set('page', page);
+        frame.src = url.toString();
+      });
+    });
+  </script>
+</body>
+</html>
